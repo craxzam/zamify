@@ -1,0 +1,79 @@
+/* Paleta: los valores --lg-* los pone ui.js */
+html.encore-dark-theme,
+html.encore-dark-theme .encore-dark-theme,
+html.encore-dark-theme .encore-base-set {
+  --background-base: var(--lg-fondo) !important;
+  --background-highlight: var(--lg-sup) !important;
+  --background-press: var(--lg-fondo) !important;
+  --background-elevated-base: var(--lg-sup) !important;
+  --background-elevated-highlight: var(--lg-realce) !important;
+  --background-elevated-press: var(--lg-sup) !important;
+  --background-tinted-base: #ffffff0f !important;
+  --background-tinted-highlight: #ffffff18 !important;
+  --background-tinted-press: #ffffff24 !important;
+  --text-base: #f2f2f2 !important;
+  --text-subdued: #9b9b9b !important;
+  --text-bright-accent: var(--lg-acento) !important;
+  --text-positive: var(--lg-acento) !important;
+  --essential-bright-accent: var(--lg-acento) !important;
+  --essential-positive: var(--lg-acento) !important;
+  --decorative-subdued: var(--lg-realce) !important;
+}
+html.encore-dark-theme .encore-bright-accent-set {
+  --background-base: var(--lg-acento) !important;
+  --background-highlight: var(--lg-acento) !important;
+  --background-press: var(--lg-acento) !important;
+}
+html, body, [data-testid="root"] { background: var(--lg-fondo) !important; }
+
+/* Sin efectos: menos trabajo para la CPU y la GPU */
+*, *::before, *::after {
+  animation-duration: .001s !important;
+  animation-iteration-count: 1 !important;
+  transition: none !important;
+}
+/* Esta barra espera el final de su transición para colocarse */
+[data-testid="action-bar-row"], [data-testid="action-bar-row"] * { transition: all .001s !important; }
+section[data-testid="component-shelf"] { content-visibility: auto; contain-intrinsic-size: auto 300px; }
+video[loop][muted] { display: none !important; }
+
+/* Minimalista */
+html.lg-min [data-testid="root"] { --panel-gap: 1px; }
+html.lg-min footer,
+html.lg-min nav[aria-label] a[href*="/download"],
+html.lg-min a[href*="/download"],
+html.lg-min a[href*="/premium"],
+html.lg-min a[href*="support.spotify.com"],
+html.lg-min [data-testid="upgrade-button"],
+html.lg-min [data-testid="upsell-download-app-button"] { display: none !important; }
+html.lg-min ::-webkit-scrollbar { width: 6px !important; height: 6px !important; }
+html.lg-min ::-webkit-scrollbar-thumb { background: #ffffff26 !important; border-radius: 3px; }
+html.lg-min [data-testid="entity-header"] > [style*="--background-base"],
+html.lg-min [data-testid$="-page"] > [style*="--background-base"] {
+  background: none !important;
+}
+html.lg-min [data-testid="global-nav-bar"] :is(a, button):is([href*="premium"], [href*="download"], [href*="support"]) { display: none !important; }
+html.lg-min [data-testid="root"] h1 { letter-spacing: -.01em; font-weight: 600 !important; }
+html.lg-min [data-testid="root"] h2 { font-size: 1.1rem !important; font-weight: 500 !important; }
+html.lg-min [data-testid="tracklist-row"] { border-radius: 2px; }
+
+/* Barra "Reproduciendo en…": negra con borde blanco en vez de rellena */
+html.encore-dark-theme [data-testid="now-playing-bar"] div.encore-bright-accent-set {
+  --background-base: var(--lg-fondo) !important;
+  --background-highlight: var(--lg-sup) !important;
+  --background-press: var(--lg-fondo) !important;
+  --background-tinted-highlight: #ffffff18 !important;
+  --text-base: #f2f2f2 !important;
+  --text-subdued: #9b9b9b !important;
+  --essential-base: #f2f2f2 !important;
+  --essential-subdued: #9b9b9b !important;
+  --text-bright-accent: #f2f2f2 !important;
+  --essential-bright-accent: #f2f2f2 !important;
+  box-sizing: border-box;
+  background: var(--lg-fondo) !important;
+  border: 1px solid #ffffffb3 !important;
+  color: #f2f2f2 !important;
+}
+
+/* Inicio: solo las tres primeras estanterías de recomendaciones */
+html.lg-min [data-testid="home-page"] section[data-testid="component-shelf"] ~ section[data-testid="component-shelf"] ~ section[data-testid="component-shelf"] ~ section[data-testid="component-shelf"] { display: none !important; }
