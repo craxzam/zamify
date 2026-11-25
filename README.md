@@ -15,6 +15,20 @@ Reproductor ligero para Windows que abre el reproductor web de Spotify en una ve
 - **Ocho paletas oscuras** y un modo minimalista.
 - **Ligero:** sin proceso gráfico, y los efectos solo consumen mientras se usan.
 
+## Consumo
+
+Datos aproximados del Administrador de tareas, sumando todos los procesos de cada app, con música sonando:
+
+| | Zamify | App oficial de escritorio |
+| --- | --- | --- |
+| Memoria (RAM) | ~270 MB | ~610–625 MB |
+| Procesador (CPU) | ~0–1 % | ~0,2–0,7 % |
+| Descarga | 0,5 MB | — |
+
+> Esto pasó en mi PC: en la tuya puede funcionar diferente. Depende del equipo, de la versión de Windows y de cada app, y de cómo la uses. Para el procesador, las dos gastan muy poco y la diferencia es mínima.
+
+Por qué gasta menos: usa el WebView2 que Windows ya incluye, funciona sin proceso gráfico, carga carátulas más pequeñas, no carga los vídeos de fondo, bloquea la analítica de terceros y los efectos de sonido solo trabajan mientras los usas.
+
 ## Requisitos
 
 - Windows 10 u 11 de 64 bits.
