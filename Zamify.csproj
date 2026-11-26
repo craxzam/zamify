@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>Zamify</AssemblyName>
     <RootNamespace>Zamify</RootNamespace>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <ApplicationIcon>icono.ico</ApplicationIcon>
     <AssemblyTitle>Zamify</AssemblyTitle>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>

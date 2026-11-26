@@ -53,6 +53,7 @@
       ctx.resume();
       if (!sonando()) dormir();
       watch(el, src);
+      espejo(el);
     } catch (e) {
       graphs.delete(el);
       say({ error: 'No se pudieron activar los efectos: ' + e.message });
@@ -92,6 +93,38 @@
     return false;
   }
 
+  // La voz del DJ llega por el mismo reproductor, pero como mp3 de otro dominio. Si ese reproductor ya
+  // pasó por los efectos, el navegador la silencia dentro del grafo: mientras dure, suena por un
+  // reproductor aparte, sin efectos y al compás del original.
+  const espejos = new WeakMap();
+  function ajeno(el) {
+    const u = el.currentSrc;
+    if (!u || u.startsWith('blob:') || el.crossOrigin != null) return false;
+    try { return new URL(u).origin !== location.origin; } catch { return false; }
+  }
+  function espejo(el) {
+    let m = espejos.get(el);
+    if (!graphs.get(el)?.src || !ajeno(el)) {
+      if (m) {
+        espejos.delete(el);
+        m.pause();
+        m.removeAttribute('src');
+        m.load();
+      }
+      return;
+    }
+    if (!m) espejos.set(el, m = new Audio());
+    if (m.src !== el.currentSrc) m.src = el.currentSrc;
+    m.volume = el.volume;
+    m.muted = el.muted;
+    m.preservesPitch = keep.get.call(el);
+    const r = rate.get.call(el);
+    if (r > 0 && m.playbackRate !== r) m.playbackRate = r;
+    if (Math.abs(m.currentTime - el.currentTime) > 0.3) m.currentTime = el.currentTime;
+    if (el.paused || el.ended) m.pause();
+    else if (m.paused) nativePlay.call(m).catch(() => {});
+  }
+
   // Para los botones de la miniatura (barra.js).
   const avisarSonando = () => document.dispatchEvent(new CustomEvent('sl-sonando', { detail: sonando() }));
   const despertar = () => { if (ctx?.state === 'suspended' && sonando()) ctx.resume(); };
@@ -124,7 +157,7 @@
     }
 
     function revisar() {
-      if (!audible()) return detener();
+      if (!audible() || ajeno(el)) return detener();   // la voz del DJ suena aparte: ahí el silencio es normal
       if (ctx.state !== 'running') {
         if (++espera >= 20) detener();
         return;
@@ -156,6 +189,8 @@
       for (const ev of ['loadedmetadata', 'play', 'playing']) el.addEventListener(ev, () => apply(el));
       for (const ev of ['pause', 'ended', 'emptied']) el.addEventListener(ev, dormir);
       for (const ev of ['playing', 'pause', 'ended', 'emptied']) el.addEventListener(ev, avisarSonando);
+      for (const ev of ['playing', 'pause', 'ended', 'emptied', 'seeked', 'volumechange', 'ratechange'])
+        el.addEventListener(ev, () => espejo(el));
     }
     apply(el);
   }
